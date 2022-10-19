@@ -1,0 +1,17 @@
+{% extends 'auctions/layout.html' %}
+
+{% block body %}
+
+<h2>Listings from Category {{ todo }}</h2>
+<ul>
+    {% for auction in auctions %}
+
+    <li>
+        <a href="{% url 'auction' auction.id %}"> {{ auction }}</a>
+    </li>
+
+    {% empty %}
+    <p>This category has no Auction Listings yet. <a href="{% url 'create_new_listing' %}">Create one.</a></p>
+    {% endfor %}
+</ul>
+{% endblock %}

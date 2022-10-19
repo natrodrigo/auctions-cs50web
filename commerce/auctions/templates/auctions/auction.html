@@ -1,0 +1,55 @@
+{% extends 'auctions/layout.html' %}
+
+{% block body %}
+<div>
+    <h2>{{auction.title}}</h2>
+    <small>Creator: {{auction.user}}</small>
+</div>
+
+
+<img src="{{auction.image}}" alt="" height="200 px">
+
+<p><strong>Description: </strong>{{ auction.description }}</p>
+
+{% if last_bid == None %}
+<p>Current bid: $ {{ auction.initialBid }}</p>
+{% else %}
+<p>Current bid: $ {{ last_bid.value }}</p>
+{% endif %}
+
+{% if user != auction.user and not auction_already_on_watchlist %}
+
+<a href="{% url 'add_to_watchlist' auction.id %}">Add this Auction to my Watchlist.</a>
+
+{% elif user != auction.user and auction_already_on_watchlist %}
+
+<a href="{% url 'remove_from_watchlist' auction.id %}">Remove this Auction from my Watchlist.</a>
+
+{% endif %}
+
+
+<div>
+    <h2>Comments</h2>
+    <div>
+        {% for comment in comments %}
+
+        <div><small><strong>{{comment.user}}</strong></small></div>
+        <div>{{comment.text}}</div>
+
+
+        {% empty %}
+        <p>There are no comments yet.</p>
+        {% endfor %}
+    </div>
+</div>
+<div class="form-group">
+    New Comment - TODO
+</div>
+
+{% if user == auction.user %}
+
+<a href="">Close Watchlist</a>
+
+{% endif %}
+
+{% endblock %}

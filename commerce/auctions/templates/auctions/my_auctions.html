@@ -1,0 +1,19 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+<h2>My Listings</h2>
+
+<ul>
+
+    {% for auction in my_auctions %}
+
+    <li><a href="{% url 'auction' auction.id %}">{{ auction }}</a></li>
+    {% empty %}
+
+    <p>No Auction lists created yet. <a href="{% url 'create_new_listing'%} ">Create One.</a></p>
+
+    {% endfor %}
+
+</ul>
+
+{% endblock %}
