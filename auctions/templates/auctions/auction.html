@@ -1,4 +1,5 @@
 {% extends 'auctions/layout.html' %}
+{% load tz %}
 
 {% block body %}
 <div>
@@ -7,7 +8,7 @@
 </div>
 
 
-<img src="{{auction.image}}" alt="" height="200 px">
+<img src="{{auction.image}}" alt="">
 
 <p><strong>Description: </strong>{{ auction.description }}</p>
 
@@ -27,13 +28,13 @@
 
 {% endif %}
 
-
+<hr>
 <div>
     <h2>Comments</h2>
     <div>
         {% for comment in comments %}
 
-        <div><small><strong>{{comment.user}}</strong></small></div>
+        <div><small><strong>{{comment.user}} - {{comment.createDate | timezone: "Europe/Paris" }}</strong></small></div>
         <div>{{comment.text}}</div>
 
 
@@ -42,13 +43,21 @@
         {% endfor %}
     </div>
 </div>
-<div class="form-group">
-    New Comment - TODO
-</div>
+<hr>
+<h3>New Comment</h3>
+<p>Comment as {{user}}:</p>
 
+<form action="{% url 'add_comment' auction.id %}" method="POST" enctype=multipart/form-data >
+    {% csrf_token %}
+<div class="form-group">
+    {{ comment_form }}
+    
+</div>
+<input type="submit" class="btn btn-primary">
+</form>
 {% if user == auction.user %}
 
-<a href="">Close Watchlist</a>
+<a href="">Close Listing</a>
 
 {% endif %}
 

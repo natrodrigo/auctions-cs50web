@@ -8,7 +8,7 @@ from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 
 from .models import Category, User, AuctionListing, Comment, Bid
-from .forms import AuctionListingForm
+from .forms import AuctionListingForm, CommentForm
 
 def index(request):
     auctions = AuctionListing.objects.all()
@@ -27,7 +27,7 @@ def create_new_listing(request):
             auction = form.save(commit=False)
             auction.user = User.objects.get(id=request.user.id)
             auction.save()
-            return HttpResponseRedirect(reverse("index"))
+            return HttpResponseRedirect(reverse("auction",kwargs={"auction_id": auction.id}))
 
         else:
             return render(request, "auctions/createnewlisting.html", {
@@ -73,11 +73,23 @@ def add_to_watchlist(request, auction_id):
         "my_watchlist" : user.watchlist.all()
     })
 
+@login_required(login_url="login")
+def add_comment (request, auction_id):
+
+    form = CommentForm(request.POST)
+    if form.is_valid():
+        comment = form.save(commit=False)
+        comment.user = User.objects.get(id=request.user.id)
+        comment.auctionListing = AuctionListing.objects.get(id = auction_id)
+        comment.save()
+        return HttpResponseRedirect(reverse("auction", kwargs={"auction_id": auction_id}))
+
+
 def auction(request, auction_id):
     auction = AuctionListing.objects.get(id = auction_id)
     user = User.objects.get(id=request.user.id)
     comments = Comment.objects.filter(auctionListing = auction).all()
-
+    comment_form = CommentForm()
     auction_already_on_watchlist = user.watchlist.filter(id = auction_id).all().exists()
     
 
@@ -86,7 +98,8 @@ def auction(request, auction_id):
         "auction":auction,
         "last_bid":last_bid,
         "auction_already_on_watchlist": auction_already_on_watchlist,
-        "comments": comments
+        "comments": comments,
+        "comment_form": comment_form
     })
 
 def categories(request):
