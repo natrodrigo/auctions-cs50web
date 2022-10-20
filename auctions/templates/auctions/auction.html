@@ -4,7 +4,7 @@
 {% block body %}
 <div>
     <h2>{{auction.title}}</h2>
-    <small>Creator: {{auction.user}}</small>
+    <small>Creator: {{auction.user}}. Expires at {{auction.duration | date:'D, d M Y'}}.</small>
 </div>
 
 
@@ -29,12 +29,15 @@
 {% endif %}
 
 <hr>
+
+{% timezone "America/Sao_Paulo" %}
 <div>
+    
     <h2>Comments</h2>
     <div>
         {% for comment in comments %}
 
-        <div><small><strong>{{comment.user}} - {{comment.createDate | timezone: "Europe/Paris" }}</strong></small></div>
+        <div><small><strong>{{comment.user}} - {{comment.createDate | date:'D, d M Y, H:i'}}</strong></small></div>
         <div>{{comment.text}}</div>
 
 
@@ -43,6 +46,8 @@
         {% endfor %}
     </div>
 </div>
+{% endtimezone %}
+
 <hr>
 <h3>New Comment</h3>
 <p>Comment as {{user}}:</p>

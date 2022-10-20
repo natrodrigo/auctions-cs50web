@@ -4,6 +4,8 @@ from unittest.util import _MAX_LENGTH
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
+from datetime import datetime
+
 
 class User(AbstractUser):
     watchlist = models.ManyToManyField('AuctionListing',related_name="watchers")
@@ -27,7 +29,7 @@ class AuctionListing(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE,related_name = "auctions")
 
     def __str__(self):
-        return f"{self.title} - {self.duration}"
+        return f"{self.title}"
 
 class Bid(models.Model):
     value = models.DecimalField(max_digits=19, decimal_places=4)
