@@ -2,9 +2,12 @@
 {% load tz %}
 
 {% block body %}
+
+{% timezone "America/Sao_Paulo" %}
+
 <div>
     <h2>{{auction.title}}</h2>
-    <small>Creator: {{auction.user}}. Expires at {{auction.duration | date:'D, d M Y'}}.</small>
+    <small>Creator: {{auction.user}}. Expires at {{auction.duration | date:'D, d M Y, H:i'}}.</small>
 </div>
 
 
@@ -30,7 +33,7 @@
 
 <hr>
 
-{% timezone "America/Sao_Paulo" %}
+
 <div>
     
     <h2>Comments</h2>

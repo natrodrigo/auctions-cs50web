@@ -2,7 +2,7 @@ from django import forms
 from .models import AuctionListing, Comment
 
 class DateInput(forms.DateInput):
-    input_type =  'date'
+    input_type =  'datetime-local'
 
 class AuctionListingForm(forms.ModelForm):
     class Meta:
